@@ -54,10 +54,11 @@ class GLProgram;
 class GLProgramState;
 #if CC_USE_PHYSICS
 class PhysicsBody;
+class PhysicsWorld;
 #endif
 
 /**
- * @addtogroup base_nodes
+ * @addtogroup _2d
  * @{
  */
 
@@ -156,7 +157,9 @@ public:
 
     CC_DEPRECATED_ATTRIBUTE virtual void setZOrder(int localZOrder) { setLocalZOrder(localZOrder); }
     
-    /* Helper function used by `setLocalZOrder`. Don't use it unless you know what you are doing.
+    /* 
+     Helper function used by `setLocalZOrder`. Don't use it unless you know what you are doing.
+     @js NA
      */
     CC_DEPRECATED_ATTRIBUTE virtual void _setLocalZOrder(int z);
 
@@ -394,12 +397,14 @@ public:
      * Sets the position (X, Y, and Z) in its parent's coordinate system.
      * 
      * @param position The position (X, Y, and Z) in its parent's coordinate system.
+     * @js NA
      */
     virtual void setPosition3D(const Vec3& position);
     /**
      * Returns the position (X,Y,Z) in its parent's coordinate system.
      *
      * @return The position (X, Y, and Z) in its parent's coordinate system.
+     * @js NA
      */
     virtual Vec3 getPosition3D() const;
 
@@ -414,6 +419,7 @@ public:
      * @see `setGlobalZValue()`
      *
      * @param positionZ  OpenGL Z vertex of this node.
+     * @js setVertexZ
      */
     virtual void setPositionZ(float positionZ);
     CC_DEPRECATED_ATTRIBUTE virtual void setVertexZ(float vertexZ) { setPositionZ(vertexZ); }
@@ -424,6 +430,7 @@ public:
      * @see setPositionZ(float)
      *
      * @return The position Z coordinate of this node.
+     * @js getVertexZ
      */
     virtual float getPositionZ() const;
     CC_DEPRECATED_ATTRIBUTE virtual float getVertexZ() const { return getPositionZ(); }
@@ -572,12 +579,14 @@ public:
      * @warning The physics body doesn't support this.
      *
      * @param rotation The rotation of the node in 3d.
+     * @js NA
      */
     virtual void setRotation3D(const Vec3& rotation);
     /**
      * Returns the rotation (X,Y,Z) in degrees.
      * 
      * @return The rotation of the node in 3d.
+     * @js NA
      */
     virtual Vec3 getRotation3D() const;
     
@@ -585,6 +594,7 @@ public:
      * Set rotation by quaternion.
      *
      * @param quat The rotation in quaternion.
+     * @js NA
      */
     virtual void setRotationQuat(const Quaternion& quat);
     
@@ -593,6 +603,7 @@ public:
      * it equals to RotationY * RotationX otherwise.
      *
      * @return The rotation in quaternion.
+     * @js NA
      */
     virtual Quaternion getRotationQuat() const;
 
@@ -608,6 +619,7 @@ public:
      * @param rotationX    The X rotation in degrees which performs a horizontal rotational skew.
      *
      * @warning The physics body doesn't support this.
+     * @js setRotationX
      */
     virtual void setRotationSkewX(float rotationX);
     CC_DEPRECATED_ATTRIBUTE virtual void setRotationX(float rotationX) { return setRotationSkewX(rotationX); }
@@ -618,6 +630,7 @@ public:
      * @see `setRotationSkewX(float)`
      *
      * @return The X rotation in degrees.
+     * @js getRotationX 
      */
     virtual float getRotationSkewX() const;
     CC_DEPRECATED_ATTRIBUTE virtual float getRotationX() const { return getRotationSkewX(); }
@@ -634,6 +647,7 @@ public:
      * @param rotationY    The Y rotation in degrees.
      *
      * @warning The physics body doesn't support this.
+     * @js setRotationY
      */
     virtual void setRotationSkewY(float rotationY);
     CC_DEPRECATED_ATTRIBUTE virtual void setRotationY(float rotationY) { return setRotationSkewY(rotationY); }
@@ -644,6 +658,7 @@ public:
      * @see `setRotationSkewY(float)`
      *
      * @return The Y rotation in degrees.
+     * @js getRotationY
      */
     virtual float getRotationSkewY() const;
     CC_DEPRECATED_ATTRIBUTE virtual float getRotationY() const { return getRotationSkewY(); }
@@ -670,12 +685,10 @@ public:
 
 
     /** @deprecated No longer needed
-    * @js NA
     * @lua NA
     */
     CC_DEPRECATED_ATTRIBUTE void setGLServerState(int serverState) { /* ignore */ };
     /** @deprecated No longer needed
-    * @js NA
     * @lua NA
     */
     CC_DEPRECATED_ATTRIBUTE int getGLServerState() const { return 0; }
@@ -719,7 +732,7 @@ public:
      * If the child is added to a 'running' node, then 'onEnter' and 'onEnterTransitionDidFinish' will be called immediately.
      *
      * @param child     A child node.
-     * @param zOrder    Z order for drawing priority. Please refer to `setLocalZOrder(int)`.
+     * @param localZOrder    Z order for drawing priority. Please refer to `setLocalZOrder(int)`.
      */
     virtual void addChild(Node * child, int localZOrder);
     /**
@@ -727,9 +740,9 @@ public:
      *
      * If the child is added to a 'running' node, then 'onEnter' and 'onEnterTransitionDidFinish' will be called immediately.
      *
-     * @param child     A child node.
-     * @param zOrder    Z order for drawing priority. Please refer to `setLocalZOrder(int)`.
-     * @param tag       An integer to identify the node easily. Please refer to `setTag(int)`.
+     * @param child         A child node.
+     * @param localZOrder   Z order for drawing priority. Please refer to `setLocalZOrder(int)`.
+     * @param tag           An integer to identify the node easily. Please refer to `setTag(int)`.
      * 
      * Please use `addChild(Node* child, int localZOrder, const std::string &name)` instead.
      */
@@ -740,7 +753,7 @@ public:
      * If the child is added to a 'running' node, then 'onEnter' and 'onEnterTransitionDidFinish' will be called immediately.
      *
      * @param child     A child node.
-     * @param zOrder    Z order for drawing priority. Please refer to `setLocalZOrder(int)`.
+     * @param localZOrder    Z order for drawing priority. Please refer to `setLocalZOrder(int)`.
      * @param name      A string to identify the node easily. Please refer to `setName(int)`.
      *
      */
@@ -949,12 +962,10 @@ public:
      * You can set everything in UserData pointer, a data block, a structure or an object.
      *
      * @return A custom user data pointer.
-     * @js NA
      * @lua NA
      */
     virtual void* getUserData() { return _userData; }
     /**
-    * @js NA
     * @lua NA
     */
     virtual const void* getUserData() const { return _userData; }
@@ -967,7 +978,6 @@ public:
      *          especially before you change this data pointer, and before this node is autoreleased.
      *
      * @param userData  A custom user data pointer.
-     * @js NA
      * @lua NA
      */
     virtual void setUserData(void *userData);
@@ -978,12 +988,10 @@ public:
      * Similar to userData, but instead of holding a void* it holds an object.
      *
      * @return A user assigned Object.
-     * @js NA
      * @lua NA
      */
     virtual Ref* getUserObject() { return _userObject; }
     /**
-    * @js NA
     * @lua NA
     */
     virtual const Ref* getUserObject() const { return _userObject; }
@@ -1071,7 +1079,6 @@ public:
      * If the Node enters the 'stage' with a transition, this event is called when the transition starts.
      * During onEnter you can't access a "sister/brother" node.
      * If you override onEnter, you shall call its parent's one, e.g., Node::onEnter().
-     * @js NA
      * @lua NA
      */
     virtual void onEnter();
@@ -1079,7 +1086,6 @@ public:
     /** Event callback that is invoked when the Node enters in the 'stage'.
      * If the Node enters the 'stage' with a transition, this event is called when the transition finishes.
      * If you override onEnterTransitionDidFinish, you shall call its parent's one, e.g. Node::onEnterTransitionDidFinish()
-     * @js NA
      * @lua NA
      */
     virtual void onEnterTransitionDidFinish();
@@ -1089,7 +1095,6 @@ public:
      * If the Node leaves the 'stage' with a transition, this event is called when the transition finishes.
      * During onExit you can't access a sibling node.
      * If you override onExit, you shall call its parent's one, e.g., Node::onExit().
-     * @js NA
      * @lua NA
      */
     virtual void onExit();
@@ -1097,7 +1102,6 @@ public:
     /**
      * Event callback that is called every time the Node leaves the 'stage'.
      * If the Node leaves the 'stage' with a transition, this callback is called when the transition starts.
-     * @js NA
      * @lua NA
      */
     virtual void onExitTransitionDidStart();
@@ -1192,7 +1196,7 @@ public:
      * This node becomes the action's target. Refer to Action::getTarget().
      * @warning Actions don't retain their target.
      *
-     * @param An Action pointer
+     * @param action An Action pointer.
      */
     virtual Action* runAction(Action* action);
 
@@ -1295,7 +1299,6 @@ public:
      * It will use the order number 0. This method will be called every frame.
      * Scheduled methods with a lower order value will be called before the ones that have a higher order value.
      * Only one "update" method could be scheduled per node.
-     * @js NA
      * @lua NA
      */
     void scheduleUpdate(void);
@@ -1306,7 +1309,6 @@ public:
      * This selector will be called every frame.
      * Scheduled methods with a lower priority will be called before the ones that have a higher value.
      * Only one "update" selector could be scheduled per node (You can't have 2 'update' selectors).
-     * @js NA
      * @lua NA
      *
      * @param priority A given priority value.
@@ -1630,7 +1632,7 @@ public:
     /** 
      * Removes a component by its pointer.
      *
-     * @param name A given component.
+     * @param component A given component.
      * @return True if removed success.
      */
     virtual bool removeComponent(Component *component);
@@ -1837,6 +1839,10 @@ protected:
     float _physicsRotation;
     bool _physicsTransformDirty;
     bool _updateTransformFromPhysics;
+
+    PhysicsWorld* _physicsWorld; /** The PhysicsWorld associated with the node.*/
+    int _physicsBodyAssociatedWith;  /** The count of PhysicsBody associated with the node and children.*/
+    float _physicsRotationOffset;  /** Record the rotation value when invoke Node::setPhysicsBody.*/
 #endif
     
     // opacity controls
@@ -1861,7 +1867,7 @@ private:
     CC_DISALLOW_COPY_AND_ASSIGN(Node);
     
 #if CC_USE_PHYSICS
-    friend class Layer;
+    friend class Scene;
 #endif //CC_USTPS
 };
 
@@ -1876,6 +1882,7 @@ private:
  
  Opacity/Color propagates into children that conform to the RGBAProtocol if cascadeOpacity/cascadeColor is enabled.
  @since v2.1
+ @js NA
  */
 class CC_DLL __NodeRGBA : public Node, public __RGBAProtocol
 {
@@ -1906,7 +1913,7 @@ private:
     CC_DISALLOW_COPY_AND_ASSIGN(__NodeRGBA);
 };
 
-// end of base_node group
+// end of _2d group
 /// @}
 
 NS_CC_END
